@@ -581,7 +581,7 @@ void Game::spawnEnemy()
 
 	// Setup the entity
 	auto entity = m_entities.create(Entity::Enemy);
-	auto spin = (360 / vertices) * (speed / m_enemyConfig.sMax);
+	auto spin = (360.0f / vertices) * (speed / m_enemyConfig.sMax);
 	entity->cTransform = std::make_shared<CTransform>(
 		pos,
 		velocity,
