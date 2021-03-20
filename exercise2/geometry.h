@@ -53,6 +53,8 @@ struct vec2
 
 	void rotate(float radians);
 
+	void rotateAround(vec2& sun, float radians);
+
 	inline static vec2 zero() {
 		return vec2(0, 0);
 	}

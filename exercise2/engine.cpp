@@ -173,13 +173,93 @@ void Game::setPaused(bool paused)
 
 void Game::sMovement()
 {
-	for (auto entity : m_entities.getAll())
+	vec2 windowSize = m_window.getSize();
+	for (auto& entity : m_entities.getAll())
 	{
 		if (entity->cTransform)
 		{
 			auto& transform = *entity->cTransform;
 			transform.position += transform.velocity;
 			transform.angle += transform.twist;
+			float radius = entity->cCollision ? entity->cCollision->radius : 0;
+			auto policy = entity->cCollision ? entity->cCollision->policy : CCollision::Kill;
+
+			// Determine trigger bounds
+			bool smallerBounds = policy == CCollision::Contain || policy == CCollision::Bounce;
+			vec2 boundsMin = smallerBounds
+				? vec2(radius, radius)
+				: vec2(-radius, -radius);
+			vec2 boundsMax = smallerBounds
+				? vec2(windowSize.x - radius, windowSize.y - radius)
+				: vec2(windowSize.x + radius, windowSize.y + radius);
+
+			// Apply policy logic
+			switch (policy) {
+				case CCollision::Contain:
+				{
+					if (transform.position.x < boundsMin.x) {
+						transform.position.x = boundsMin.x;
+					}
+					if (transform.position.x > boundsMax.x) {
+						transform.position.x = boundsMax.x;
+					}
+					if (transform.position.y < boundsMin.y) {
+						transform.position.y = boundsMin.y;
+					}
+					if (transform.position.y > boundsMax.y) {
+						transform.position.y = boundsMax.y;
+					}
+					break;
+				}
+				case CCollision::Bounce:
+				{
+					if (transform.position.x < boundsMin.x) {
+						transform.position.x = boundsMin.x + (boundsMin.x - transform.position.x);
+						transform.velocity.x *= -1;
+					}
+					if (transform.position.x > boundsMax.x) {
+						transform.position.x = boundsMax.x + (boundsMax.x - transform.position.x);
+						transform.velocity.x *= -1;
+					}
+					if (transform.position.y < boundsMin.y) {
+						transform.position.y = boundsMin.y + (boundsMin.y - transform.position.y);
+						transform.velocity.y *= -1;
+					}
+					if (transform.position.y > boundsMax.y) {
+						transform.position.y = boundsMax.y + (boundsMax.y - transform.position.y);
+						transform.velocity.y *= -1;
+					}
+					break;
+				}
+				case CCollision::Wrap:
+				{
+					if (transform.position.x < boundsMin.x) {
+						transform.position.x = boundsMax.x;
+					}
+					if (transform.position.x > boundsMax.x) {
+						transform.position.x = boundsMin.x;
+					}
+					if (transform.position.y < boundsMin.y) {
+						transform.position.y = boundsMax.y;
+					}
+					if (transform.position.y > boundsMax.y) {
+						transform.position.y = boundsMin.y;
+					}
+					break;
+				}
+				case CCollision::Kill:
+				{
+					if (
+						(transform.position.x < boundsMin.x) ||
+						(transform.position.x > boundsMax.x) ||
+						(transform.position.y < boundsMin.y) ||
+						(transform.position.y > boundsMax.y)
+					) {
+						m_entities.remove(entity->id);
+					}
+					break;
+				}
+			}
 		}
 	}
 }
@@ -452,7 +532,7 @@ void Game::spawnPlayer()
 		m_playerConfig.OT
 	);
 	entity->cInput = std::make_shared<CInput>();
-	entity->cCollision = std::make_shared<CCollision>(m_playerConfig.CR);
+	entity->cCollision = std::make_shared<CCollision>(m_playerConfig.CR, CCollision::Contain);
 	m_player = entity;
 }
 
@@ -498,7 +578,7 @@ void Game::spawnEnemy()
 		sf::Color(m_enemyConfig.OR, m_enemyConfig.OG, m_enemyConfig.OB),
 		m_enemyConfig.OT
 	);
-	entity->cCollision = std::make_shared<CCollision>(m_enemyConfig.CR);
+	entity->cCollision = std::make_shared<CCollision>(m_enemyConfig.CR, CCollision::Bounce);
 	entity->cLifespan = std::make_shared<CLifespan>(m_enemyConfig.L, m_currentFrame);
 	entity->cScore = std::make_shared<CScore>(vertices);
 }
@@ -512,10 +592,17 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> killedEnemy)
 	auto vertices = circle.getPointCount();
 	float childRotation = pi * 2 / vertices;
 	for (int index = 0; index < vertices; index++) {
-		auto child = m_entities.create(Entity::EnemyChild);
 		auto velocity = vec2::up();
 		velocity.rotate(childRotation * index);
-		child->cTransform = std::make_shared<CTransform>(pos, velocity, transform->angle, transform->twist / vertices);
+		auto childOffset = vec2::up() * (circle.getRadius() * scale);
+		childOffset.rotate(childRotation * index);
+		auto child = m_entities.create(Entity::EnemyChild);
+		child->cTransform = std::make_shared<CTransform>(
+			pos + childOffset,
+			velocity,
+			transform->angle,
+			transform->twist / vertices
+		);
 		child->cShape = std::make_shared<CShape>(
 			circle.getRadius() * scale,
 			vertices,
@@ -523,7 +610,7 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> killedEnemy)
 			circle.getOutlineColor(),
 			circle.getOutlineThickness()
 		);
-		child->cCollision = std::make_shared<CCollision>(killedEnemy->cCollision->radius * scale);
+		child->cCollision = std::make_shared<CCollision>(killedEnemy->cCollision->radius * scale, CCollision::Wrap);
 		child->cLifespan = std::make_shared<CLifespan>(m_enemyConfig.L / vertices, m_currentFrame);
 		child->cScore = std::make_shared<CScore>(1);
 	}
@@ -548,7 +635,7 @@ void Game::spawnBullet(std::shared_ptr<Entity> shooter, const vec2& mouse)
 		sf::Color(m_bulletConfig.OR, m_bulletConfig.OG, m_bulletConfig.OB),
 		m_bulletConfig.OT
 	);
-	bullet->cCollision = std::make_shared<CCollision>(m_bulletConfig.CR);
+	bullet->cCollision = std::make_shared<CCollision>(m_bulletConfig.CR, CCollision::Kill);
 	bullet->cLifespan = std::make_shared<CLifespan>(m_bulletConfig.L, m_currentFrame);
 }
 

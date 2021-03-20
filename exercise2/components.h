@@ -34,10 +34,19 @@ struct CShape
 
 struct CCollision
 {
-	float radius;
+	enum BoundsPolicy {
+		Contain,
+		Wrap,
+		Bounce,
+		Kill,
+	};
 
-	CCollision(float radius)
+	float radius;
+	BoundsPolicy policy;
+
+	CCollision(float radius, BoundsPolicy policy)
 		: radius(radius)
+		, policy(policy)
 	{}
 };
 
