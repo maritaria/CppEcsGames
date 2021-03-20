@@ -557,8 +557,6 @@ void Game::spawnPlayer()
 
 void Game::spawnEnemy()
 {
-	std::cout << "spawnEnemy()" << std::endl;
-
 	// Find a spot for the new enemy
 	auto size = m_window.getSize();
 	vec2 pos;
