@@ -51,8 +51,10 @@ public:
 
 	std::shared_ptr<Entity> create(Entity::Tag tag);
 	void remove(EntityId idEntity);
-	void remove(std::shared_ptr<Entity>& entity);
+	void remove(const std::shared_ptr<Entity>& entity);
+	void clear();
 	size_t size();
+	size_t countByTag(Entity::Tag tag, bool includeDead = false);
 
 	const std::vector<std::shared_ptr<Entity>>& getAll();
 	std::shared_ptr<Entity> getById(EntityId idEntity);

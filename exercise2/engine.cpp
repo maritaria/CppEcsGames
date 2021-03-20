@@ -2,6 +2,7 @@
 #include "components.h"
 #include "random.h"
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -11,7 +12,7 @@
 Game::Game(const std::string& configPath)
 {
 	init(configPath);
-	spawnPlayer();
+	setupNewGame();
 }
 
 void Game::init(const std::string& configPath)
@@ -143,6 +144,16 @@ void Game::init(const std::string& configPath)
 	}
 }
 
+void Game::setupNewGame() {
+	m_entities.clear();
+	m_score = 0;
+	m_currentFrame = 0;
+	m_spawnCounter = 0;
+	m_killed = false;
+	m_paused = false;
+	spawnPlayer();
+}
+
 void Game::run()
 {
 	// TODO: Pause functionality
@@ -266,7 +277,7 @@ void Game::sMovement()
 
 void Game::sLifespan()
 {
-	for (auto entity : m_entities.getAll())
+	for (auto& entity : m_entities.getAll())
 	{
 		if (entity->cLifespan)
 		{
@@ -310,8 +321,13 @@ void Game::sUserInput()
 			case sf::Keyboard::S:
 				input.down = true;
 				break;
+			case sf::Keyboard::Space:
 			case sf::Keyboard::Escape:
-				setPaused(!m_paused);
+				if (m_killed) {
+					setupNewGame();
+				} else {
+					setPaused(!m_paused);
+				}
 				break;
 			}
 		}
@@ -426,9 +442,6 @@ void Game::sRender()
 		auto playerPos = m_player->cTransform->position;
 		m_text.setPosition(playerPos.x - rect.width / 2, playerPos.y - rect.height / 2);
 	}
-
-
-
 	m_window.draw(m_text);
 
 	// Swap buffers
@@ -437,9 +450,14 @@ void Game::sRender()
 
 void Game::sEnemySpawner()
 {
-	m_spawnCounter++;
+	// Increase spawn speed as score increases
+	int increment = log10(10 + m_score);
+	int maxEnemies = 1 + (m_score / 100);
+	m_spawnCounter += increment;
 	if (m_spawnCounter >= m_enemyConfig.SP) {
-		spawnEnemy();
+		if (m_entities.countByTag(Entity::Enemy) < maxEnemies) {
+			spawnEnemy();
+		}
 		m_spawnCounter = 0;
 	}
 }
@@ -506,6 +524,7 @@ void Game::sCollision()
 					runTagLogic(entity, other, Entity::Player, Entity::EnemyChild, [this](std::shared_ptr<Entity>& player, std::shared_ptr<Entity>& enemy) {
 						if (enemy->dead) return;
 						setPaused(true);
+						m_killed = true;
 					});
 				}
 			}
@@ -601,7 +620,7 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> killedEnemy)
 			pos + childOffset,
 			velocity,
 			transform->angle,
-			transform->twist / vertices
+			transform->twist * vertices
 		);
 		child->cShape = std::make_shared<CShape>(
 			circle.getRadius() * scale,
@@ -622,11 +641,12 @@ void Game::spawnBullet(std::shared_ptr<Entity> shooter, const vec2& mouse)
 	auto transform = shooter->cTransform;
 	vec2 pos = transform->position;
 	vec2 aimDelta = (mouse - pos).normalized();
+	float shooterRadius = shooter->cCollision ? shooter->cCollision->radius : 1;
 	bullet->cTransform = std::make_shared<CTransform>(
-		pos,
+		pos + (aimDelta * shooterRadius),
 		aimDelta * m_bulletConfig.S,
 		transform->angle,
-		transform->twist
+		transform->twist * (shooterRadius / m_bulletConfig.SR)
 	);
 	bullet->cShape = std::make_shared<CShape>(
 		m_bulletConfig.SR,

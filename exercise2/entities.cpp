@@ -1,5 +1,7 @@
 #include "entities.h"
 
+#include <functional>
+
 bool isEntityMarkedDead(const std::shared_ptr<Entity>& entity)
 {
 	return entity->dead;
@@ -41,7 +43,7 @@ void EntityManager::remove(EntityId idEntity)
 	remove(entity);
 }
 
-void EntityManager::remove(std::shared_ptr<Entity>& entity)
+void EntityManager::remove(const std::shared_ptr<Entity>& entity)
 {
 	if (entity) {
 		entity->dead = true;
@@ -66,6 +68,22 @@ std::shared_ptr<Entity> EntityManager::getById(EntityId idEntity)
 		}
 	}
 	return nullptr;
+}
+
+void EntityManager::clear() {
+	m_babies.clear();
+	for (auto& entity : m_entities) {
+		remove(entity);
+	}
+}
+
+size_t EntityManager::countByTag(Entity::Tag tag, bool includeDead) {
+	auto& entities = m_tagTable[tag];
+	if (includeDead) {
+		return entities.size();
+	} else {
+		return std::count_if(entities.begin(), entities.end(), std::not_fn(isEntityMarkedDead));
+	}
 }
 
 const std::vector<std::shared_ptr<Entity>> EntityManager::getByTag(Entity::Tag tag)

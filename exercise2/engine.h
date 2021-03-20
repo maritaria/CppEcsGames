@@ -12,6 +12,7 @@ class Game
 	sf::RenderWindow m_window;
 	bool m_paused = false;
 	bool m_running = true;
+	bool m_killed = false;
 	EntityManager m_entities;
 	sf::Font m_font;
 	sf::Text m_text;
@@ -25,6 +26,7 @@ class Game
 	std::shared_ptr<Entity> m_player;
 
 	void init(const std::string& config);
+	void setupNewGame();
 	void setPaused(bool paused);
 
 	void sMovement();
