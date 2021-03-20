@@ -151,11 +151,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="exercise2.cpp" />
+    <ClCompile Include="exercise2\engine.cpp" />
+    <ClCompile Include="exercise2\entities.cpp" />
+    <ClCompile Include="exercise2\geometry.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="exercise1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="exercise2\components.h" />
+    <ClInclude Include="exercise2\engine.h" />
+    <ClInclude Include="exercise2\entities.h" />
+    <ClInclude Include="exercise2\geometry.h" />
+    <ClInclude Include="exercise2\random.h" />
     <ClInclude Include="exercises.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\config-exercise2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

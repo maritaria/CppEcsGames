@@ -6,5 +6,5 @@
 
 int main()
 {
-	return main_exercise1();
+	return exercise2();
 }

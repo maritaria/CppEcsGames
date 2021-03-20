@@ -40,7 +40,7 @@ public:
             m_velocity.y *= -1;
         }
         auto shapeBounds = m_shape->getLocalBounds();
-        auto windowSize = window.getSize() - sf::Vector2u(shapeBounds.width, shapeBounds.height);
+        auto windowSize = window.getSize() - sf::Vector2u((unsigned int) shapeBounds.width, (unsigned int) shapeBounds.height);
         if (newPos.x >= windowSize.x) {
             auto delta = (newPos.x - windowSize.x);
             newPos.x -= delta * 2;
@@ -64,7 +64,7 @@ public:
     }
 };
 
-int main()
+int exercise1()
 {
     // Print runtime info
     std::cout << "Working directory: " << std::filesystem::current_path() << std::endl;
@@ -94,7 +94,7 @@ int main()
             int width, height;
             line >> width >> height;
             window.setSize(sf::Vector2u(width, height));
-            window.setView(sf::View(sf::FloatRect(0, 0, width, height)));
+            window.setView(sf::View(sf::FloatRect(0, 0, (float) width, (float) height)));
 
         }
         else if (instruction == "Font") {
