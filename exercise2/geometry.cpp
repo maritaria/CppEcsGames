@@ -26,10 +26,3 @@ void vec2::rotate(float radians)
 	x = cos(newAngle) * vectorLength;
 	y = sin(newAngle) * vectorLength;
 }
-
-void vec2::rotateAround(vec2& sun, float radians)
-{
-	vec2 delta = (*this - sun);
-	delta.rotate(radians);
-	*this = sun + delta;
-}

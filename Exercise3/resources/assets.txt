@@ -1,0 +1,56 @@
+# Textures
+
+Texture TexStand	images/player/stand.png
+Texture TexRun		images/player/run.png
+Texture TexAir		images/player/air.png
+Texture TexBuster	images/bullet.png
+Texture TexExplode	images/explosion.png
+Texture TexCoin		images/coin.png
+
+Texture TexBrick	images/world/brick.png
+Texture TexQ		images/world/question.png
+Texture TexQ2		images/world/question2.png
+Texture TexPipe		images/world/pipe.png
+Texture TexPipeBig	images/world/pipebig.png
+Texture TexCloud	images/world/cloud.png
+Texture TexCloudBig	images/world/cloudbig.png
+Texture TexBush		images/world/bush.png
+Texture TexBushBig	images/world/bushbig.png
+Texture TexGround	images/world/ground.png
+Texture TexBlock	images/world/block.png
+Texture TexPole		images/world/pole.png
+Texture TexFlag		images/world/flag.png
+
+# Animations
+
+Animation Stand		TexStand	1	0
+Animation Run		TexRun		2	10
+Animation Air		TexAir		1	0
+Animation Buster	TexBuster	1	0
+Animation Explosion	TexExplode	13	6
+Animation Coin		TexCoin		6	5
+Animation Question	TexQ		4	10
+Animation Question2	TexQ2		1	0
+
+Animation Brick		TexBrick	1	0
+Animation Pipe		TexPipe		1	0
+Animation PipeBig	TexPipeBig	1	0
+Animation Cloud		TexCloud	1	0
+Animation CloudBig	TexCloudBig	1	0
+Animation Bush		TexBush		1	0
+Animation BushBig	TexBushBig	1	0
+Animation Ground	TexGround	1	0
+Animation Block		TexBlock	1	0
+Animation Pole		TexPole		1	0
+Animation Flag		TexFlag		2	30
+
+# Fonts
+
+Font	Arial		fonts/arial.ttf
+Font	Mario		fonts/super-mario.ttf
+Font	Megaman		fonts/megaman-2.ttf
+
+# Levels
+
+Level	level1		levels/level1.txt
+Level	level2		levels/level2.txt

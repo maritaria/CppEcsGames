@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="assets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\mainmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\playlevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\assets.txt" />
+    <Text Include="resources\levels\level1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="levels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\playlevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\mainmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\images\explosion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\bullet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\coin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\player\air.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\player\run.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\player\stand.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\block.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\brick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\bush.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\bushbig.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\cloud.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\cloudbig.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\flag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\ground.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\pipe.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\pipebig.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\pole.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\question.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\world\question2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\fonts\arial.ttf" />
+    <Font Include="resources\fonts\megaman-2.ttf" />
+    <Font Include="resources\fonts\super-mario.ttf" />
+  </ItemGroup>
+</Project>
