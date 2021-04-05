@@ -27,6 +27,14 @@ Tile 5 6 Ground
 Tile 6 6 Ground
 Tile 7 6 Ground
 Tile 8 6 Ground
+Tile 9 6 Ground
+Tile 10 6 Ground
+Tile 11 6 Ground
+Tile 12 6 Ground
+Tile 13 6 Ground
+Tile 13 5 Ground
+Tile 13 4 Ground
+Tile 14 4 Ground
 
 Tile 3 3 Ground
 Tile 3 4 Ground
@@ -34,8 +42,8 @@ Tile 3 5 Ground
 
 Tile 6 3 Question
 Tile 7 3 Ground
-Tile 8 3 Ground
-Tile 8 4 Ground
-Tile 8 5 Ground
+Tile 8 3 Question
+Tile 9 3 Ground
+Tile 10 3 Question
 
-Player 0 0 -64 -24 128 152 5 30 -30 2 Buster
+Player 0 0 -64 -24 128 152 5 40 -60 2 Buster
