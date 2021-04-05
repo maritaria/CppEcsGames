@@ -52,7 +52,7 @@ void Scene_PlayLevel::perform(const Command& action) {
 				switch (action.type) {
 					case Command::Left: input.left = !action.ended; break;
 					case Command::Right: input.right = !action.ended; break;
-					case Command::Up: input.jump = !action.ended && state.canJump; break;
+					case Command::Up: input.jump = !action.ended; break;
 					case Command::Fire: input.shoot = !action.ended; break;
 				}
 			}
@@ -72,6 +72,7 @@ void Scene_PlayLevel::tick() {
 	}
 	sysRender();
 	sysPreviousPosition();
+	frame++;
 }
 
 vec2 Scene_PlayLevel::gridToPixel(const vec2& gridPos) const {
@@ -106,8 +107,8 @@ void Scene_PlayLevel::resetLevel() {
 			>> bboxW
 			>> bboxH
 			>> playerConfig.movementSpeed
-			>> playerConfig.jumpVelocity
 			>> playerConfig.maxSpeed
+			>> playerConfig.jumpVelocity
 			>> playerConfig.gravity
 			>> playerConfig.bulletAnimation
 			)) {
@@ -187,9 +188,9 @@ void Scene_PlayLevel::sysEntities() {
 void Scene_PlayLevel::sysGravity() {
 	for (auto& player : entities.list(Entity::Tag::Player)) {
 		auto& transform = player->getComponent<CTransform>();
-		auto& input = player->getComponent<CInput>();
-		if (!input.jump) {
-			transform.velocity.y = playerConfig.gravity;
+		auto& state = player->getComponent<CPlayerState>();
+		if (state.jumpStart == 0) {
+			transform.velocity.y += playerConfig.gravity;
 		}
 	}
 }
@@ -215,7 +216,18 @@ void Scene_PlayLevel::sysInput() {
 		}
 
 		if (input.jump) {
-			playerTrans.velocity.y = playerConfig.jumpVelocity;
+			if (state.canJump) {
+				state.canJump = false;
+				state.jumpStart = frame;
+			}
+			int jumpingFrames = frame - state.jumpStart;
+			if (jumpingFrames < state.maxJumpLength) {
+				playerTrans.velocity.y = playerConfig.jumpVelocity;
+			} else {
+				state.jumpStart = 0;
+			}
+		} else {
+			state.jumpStart = 0;
 		}
 
 		if (input.shoot) {
@@ -468,21 +480,27 @@ void Scene_PlayLevel::onCollision(const EntityPtr& player, const EntityPtr& tile
 		// Player is landing onto the box
 		playerTrans.position.y -= overlap.size.y;
 		player->getComponent<CPlayerState>().canJump = true;
+		playerTrans.velocity.y = 0;
 	} else if (previousBox.top() >= worldBox.bottom()) {
 		// Player is head banging into the box
 		playerTrans.position.y += overlap.size.y;
+		playerTrans.velocity.y = 0;
 		if (tile->hasComponent<CCoinBox>()) {
 			onCoinBoxHit(player, tile);
 		}
 	} else if (previousBox.right() <= worldBox.left()) {
 		// Player walked right into a wall
 		playerTrans.position.x -= overlap.size.x;
+		playerTrans.velocity.x = 0;
 	} else if (previousBox.left() >= worldBox.right()) {
 		// Player walked left into a wall
 		playerTrans.position.x += overlap.size.x;
+		playerTrans.velocity.x = 0;
 	} else {
 		// No idea how to handle, teleport player on top of the box
 		playerTrans.position.y -= (worldBox.top() - playerBox.bottom());
+		playerTrans.velocity.x = 0;
+		playerTrans.velocity.y = 0;
 	}
 }
 

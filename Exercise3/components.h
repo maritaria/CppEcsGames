@@ -31,19 +31,11 @@ struct CInput : public Component
 	CInput() = default;
 };
 
-struct SideFlags
-{
-	bool up;
-	bool down;
-	bool left;
-	bool right;
-};
-
 struct CPlayerState : public Component
 {
 	bool canJump = false;
-	SideFlags previousWalls;
-	SideFlags currentWalls;
+	int jumpStart = 0;
+	int maxJumpLength = 1; // frames
 };
 
 struct CBoundingBox : public Component

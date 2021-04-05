@@ -2,7 +2,7 @@
 # Level specification file
 # Tile <gridX> <gridY> <animation>
 # Dec <gridX> <gridY> <animation>
-# Player <gridY> <gridY> <BBoxX> <BBoxY> <BBoxW> <BBoxH> <speedX> <speedJump> <speedMax> <gravity> <bullet animation>
+# Player <gridY> <gridY> <BBoxX> <BBoxY> <BBoxW> <BBoxH> <speedX> <speedMax> <speedJump> <gravity> <bullet animation>
 #
 # Grid coordinates are made up of floats, indicating the offset in tile space.
 # Coordinate 0 0 starts in the bottom left screen corner, with x extending positively rightwards and y extending positively upwards
@@ -38,4 +38,4 @@ Tile 8 3 Ground
 Tile 8 4 Ground
 Tile 8 5 Ground
 
-Player 0 0 -64 -24 128 152 5 -10 8 10 Buster
+Player 0 0 -64 -24 128 152 5 30 -30 2 Buster
