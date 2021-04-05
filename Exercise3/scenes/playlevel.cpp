@@ -396,7 +396,8 @@ void Scene_PlayLevel::sysRender() {
 		shape.setFillColor(sf::Color::Transparent);
 		shape.setOutlineColor(sf::Color::Yellow);
 		shape.setOutlineThickness(1);
-		sf::Text label("testme", game->getAssets().getFont("Arial"));
+		sf::Text label;
+		label.setFont(game->getAssets().getFont("Arial"));
 		label.setFillColor(sf::Color::Yellow);
 
 		auto windowSize = window.getSize() + vec2::one();
