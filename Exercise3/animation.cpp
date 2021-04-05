@@ -26,6 +26,7 @@ void Animation::reset()
 {
 	index = 0;
 	timer = 0;
+	updateSprite();
 }
 
 bool Animation::hasEnded() const
